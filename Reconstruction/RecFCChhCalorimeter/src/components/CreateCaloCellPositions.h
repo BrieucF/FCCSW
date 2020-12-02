@@ -16,6 +16,10 @@
 
 class IGeoSvc;
 
+namespace dd4hep {
+  class Constant;
+}
+
 /** @class CreateCaloCellPositions Reconstruction/RecCalorimeter/src/components/CreateCaloCellPositions.h
  * CreateCaloCellPositions.h
  *
@@ -43,6 +47,8 @@ public:
    */
   StatusCode finalize();
 
+  int get_system_id(std::string systemName);
+
 private:
   /// Handle for tool to get positions in ECal Barrel
   ToolHandle<ICellPositionsTool> m_cellPositionsECalBarrelTool;
@@ -60,6 +66,9 @@ private:
   ToolHandle<ICellPositionsTool> m_cellPositionsHFwdTool;
   /// Decoder for system ID
   dd4hep::DDSegmentation::BitFieldCoder* m_decoder = new dd4hep::DDSegmentation::BitFieldCoder("system:4");
+  /// To check which system ID corresponds to which detector
+  ServiceHandle<IGeoSvc> m_geoSvc;
+  int m_detId_ECAL_Barrel, m_detId_HCAL_Barrel, m_detId_HCalExtBarrel, m_detId_EMEC, m_detId_HEC, m_detId_EMFwd, m_detId_HFwd;
   /// Input collection
   DataHandle<fcc::CaloHitCollection> m_hits{"hits/hits", Gaudi::DataHandle::Reader, this};
   /// Output collection
